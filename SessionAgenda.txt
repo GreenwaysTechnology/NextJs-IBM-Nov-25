@@ -1,0 +1,14 @@
+Next.js UI development
+API Development
+Database Programming
+GraphQL integration
+
+Pre knowledge
+java script
+HTML
+CSS
+React fundamentals
+  -components
+ - props
+ -state
+ -hooks
