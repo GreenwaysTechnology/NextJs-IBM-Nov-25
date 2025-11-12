@@ -1261,6 +1261,91 @@ export function Counter(props) {
     </div>
 }
 &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-									Client Compoent uses another client Component
+									Client Component uses another client Component
 &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+app/patterns/clientusesclient/layout.js
+//server component
+export default function ServerLayout({children}) {
+     return <div>
+            {children}
+     </div>
+}
+app/patterns/clientusesclient/page.js
+import ClientOne from "@/app/patterns/clientusesclient/components/ClientOne";
+
+
+export default function ServerPage() {
+    return <>
+        <ClientOne />
+    </>
+}
+app/patterns/clientusesclient/components/ClientOne.jsx
+'use client'
+
+import ClientTwoComponent from "@/app/patterns/clientusesclient/components/ClientTwo";
+
+export default function ClientOneComponent() {
+
+    return <>
+        <h1>Client One</h1>
+        <ClientTwoComponent />
+    </>
+
+}
+app/patterns/clientusesclient/component/ClientTwo.jsx
+
+'use client'
+
+export default function ClientTwoComponent() {
+
+    return <>
+        <h1>Client Two</h1>
+    </>
+
+}
+Note :
+
+	  If client component uses another client component, that another client component no need to use 'use client' directive.
+								Incase the same client used by another server component,				
+									'use client' directive must be three
+eg:
+app/patterns/clientusesclient/component/ClientTwo.jsx
+
+export default function ClientTwoComponent() {
+
+    return <>
+        <h1>Client Two</h1>
+    </>
+
+}
+
+React carbon Integration:
+
+1.npm install @carbon/react
+
+
+
+app/patterns/clientusesclient/component/MyButton.jsx
+
+'use client'
+
+import { Button } from "@carbon/react"
+
+export default function MyButton() {
+
+    return <div>
+        <h1>React Carbon Lib</h1>
+        <Button>Hello</Button>
+    </div>
+
+}
+
+app/patterns/clientusesclient/page.js
+import MyButton from "@/app/patterns/clientusesclient/components/MyButton";
+export default function ServerPage() {
+    return <>
+        <MyButton />
+    </>
+}
 
