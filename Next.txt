@@ -1348,4 +1348,97 @@ export default function ServerPage() {
         <MyButton />
     </>
 }
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+									       Linking and Navigation
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+In order to understand how navigation works in Next.js we need to know the common concepts
+
+1.Server Rendering
+2.Prefeching 
+3.Streaming
+4.Client-side Transitions
+
+1.Server Rendering
+ 
+Layouts and Pages are React Server Components by default, on Initial and subsequent navigations, the "Server Component Payload" (RSC) Payload is generated on the server before being sent to the client.
+
+hello.java -source code
+|
+compile
+hello.class -  byte code
+|
+execute
+|
+you will get output
+
+page.js - source code
+|
+compile - turbopack | swc
+|
+server component 
+|
+rsc payload - React Server Component Payload - compiled
+	
+rsc :
+  It is compact binary format that encodes the rendered output of your server component tree,This payload is streamed from the server to client
+
+
+<script src="react-dom.js"></script> ---->engine code
+<script src="react.js"></script>
+<script src="main_bundle.js"></script>
+
+php / servlets/jsp / aspx
+hello.php ------>hello.html - pure html
+
+hello.js---------->(rsc payload) hello.html - not pure html
+							<html>
+								<head>
+									 it will add all js libs/ and app code and css will be included
+								<body>
+							 </body>
+							 </html>
+
+
+next.js code--compile---RSC Payload (server component code ,client component code)  ---rendered as html
+RSC payload is compact binary representation of next.js code
+
+Server Component Payload:
+   It is internal json like structure, it is compiled image from jsx/js/tsx file.
+
+ Source code---->Next.js Compiler---->React Server Component Payload (RSC P)------>Sent to the Client(browser)----->Browser downloads the RSC Payload ,Construct DOM tree.
+
+There are two types of Rendering, based on "When" it happens
+
+1.Static Rendering (or Prerendering) happens at build time or during revalidation and the result is cached (ISR)
+
+2.Dynamic Rendering  happens at "request time" in response to a client request.
+
+Draw backs of Server Rendering:
+.....................................................
+	The trade-off server rendering is that the client must wait for the server to response before the new route can be shown.
+							But Next.js has taken step to improve or avoid this drawback
+
+					  	By Introducing  features called "prefetching"  and "Client side transitions" ,and also Streaming
+
+
+
+Prefetching:
+.....................
+			Prefetching is the process of loading a route in the background before the user navigates to it
+This makes navigation between routes in your application feel instant, because by the time a user clicks on a link, the data render the route is already available in the client side.
+
+How much of the route is prefecthed depends on whether it's static or dyanmic
+
+1.static route : the full route is prefetched.
+2.dynamic route: prefetching is skipped by default, or the route is partially prefetched if "loading.jsx" is present
+
+Why dynamic route is skipping  prefetching?		
+
+		By Skipping or Partially prefetching dynamic routes, Next tries to avoid unnecessary work on the server for routes the users may never visits.
+		How ever , waiting for a server response before navigation can give the users the impression that the app  is not responding
+
+How to inform the user that app is loading? 
+
+	You have to show that the app is still active -  You can show some progress bar.
 
