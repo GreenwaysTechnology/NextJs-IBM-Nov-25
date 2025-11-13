@@ -1625,3 +1625,95 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+											Active Links
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+If you want to highlight which menu we have clicked, we can  show the menu highlighted
+
+How to enable active link feature?
+
+you can use hook "usePathname()" to determine if link is active or not.
+
+For example to add a css class to the active link, you can check the current pathname matches  of the link.
+
+src/app/links.css
+.active {
+    background-color: aqua;
+}
+
+src/app/components/NavBar.jsx
+
+'use client
+import Link from "next/link";
+import { usePathname } from "next/navigation"
+import '@/app/links.css'
+
+export default function NavBar() {
+    const pathname = usePathname()
+    // console.log(pathname)
+    return <nav>
+        <ul>
+            <li>
+                <Link className={`${pathname === '/about' ? 'active' : ''}`} href={{ pathname: '/about' }}>About</Link>
+            </li>
+            <li>
+                <Link className={`${pathname === '/services' ? 'active' : ''}`} href={{ pathname: '/services' }}>Services</Link>
+            </li>
+        </ul>
+    </nav>
+}
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+										useRouter Hook
+...........................................................................................................................................................................................................................................
+useRouter hook allows you programmetically change route from client components.
+
+src/app/dashboard/components/DashboardNavigator.jsx
+'use client'
+
+import { useRouter } from "next/navigation"
+
+export function DashBoardNavigator() {
+    const router = useRouter()
+    return <div>
+        <button onClick={() => {
+            router.push('/services')
+        }}>Services</button>
+        <button onClick={() => {
+            router.push('/about')
+        }}>About</button>
+    </div>
+}
+
+src/app/components/NavBar.jsx
+'use client'
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import '../link.css'
+
+export default function NavBar() {
+    const pathname = usePathname()
+    // console.log(pathname)
+    return <nav>
+        <ul>
+            <li>
+                <Link className={`${pathname === '/about' ? 'active' : ''}`} href={{ pathname: '/about' }}>About</Link>
+            </li>
+            <li>
+                <Link className={`${pathname === '/services' ? 'active' : ''}`} href={{ pathname: '/services' }}>Services</Link>
+            </li>
+
+              <li>
+                <Link className={`${pathname === '/dashboard' ? 'active' : ''}`} href={{ pathname: '/dashboard' }}>DashBoard</Link>
+            </li>
+        </ul>
+    </nav>
+}
+
+src/app/dashboard/page.js
+import { DashBoardNavigator } from "@/app/components/DashboardNavigator";
+
+export default function Dashboard() {
+    return <DashBoardNavigator />
+}
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
