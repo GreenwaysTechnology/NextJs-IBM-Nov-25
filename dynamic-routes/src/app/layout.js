@@ -31,6 +31,9 @@ export default function RootLayout({ children }) {
             <li>
               <Link href={{ pathname: "/posts" }}>Todos (Using Fetch API call )</Link>
             </li>
+            <li>
+              <Link href={{ pathname: "/products" }}>Products (Using  Swallow Routing-Pagination)</Link>
+            </li>
           </ul>
         </nav>
         {children}
