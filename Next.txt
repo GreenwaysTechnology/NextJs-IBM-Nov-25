@@ -2083,9 +2083,173 @@ export default async function ProductsPage({ searchParams }) {
     )
 }
 &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+.........................................................................................................................................................................................................................................
+			      					Image Handling
+...........................................................................................................................................................................................................................................
+
+Next.js comes with automatic image optimization for better performance and user experiences.
+
+How to handle static assets?
+
+You can store all static assets such as images,fonts,docments under public folder in the root directory
+
+if you are going to access any static assets inside code , you can use "/".
+
+Image: 
+ Next.js provides Image component which extends HTML <img> element.
+
+How to use Image component?
+
+ next/image package 
+
+<Image src="" alt="">
+
+src property can point local image or remote image.
+
+How to use local image?
+
+import Image from "next/image"
+export default function ImagePage() {
+
+    return <div>
+        <Image src="/next.svg" alt="This is Next logo" height={100} width={100} />
+        <Image src="/window.svg" alt="This is Next logo" height={100} width={100} />
+
+    </div>
+}
+
+How to handle Remote Images?
+import Image from "next/image"
+
+export async function fetchProducts() {
+    const url = 'https://fakestoreapi.com/products'
+    const response = await fetch(url)
+    return response.json()
+}
+export default async function ProductsPage() {
+    const products = await fetchProducts()
+    return <div className="max-w-6xl mx-auto px-4 py-8">
+        <h1 className="text-3xl font-semibold mb-6 text-center">Products</h1>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {
+                products.map(product => {
+                    return <section key={product.id}>
+                        <h2>{product.id}</h2>
+                        <h3>{product.title}</h3>
+                        <Image
+                            src={product.image}
+                            alt={product.title}
+                            width={100}
+                            height={100}
+                            className="w-full h-100 w-100 object-cover transform hover:scale-105 transition-transform duration-300 ease-in-out"
+                            loading="lazy"
+                        />
+                    </section>
+                })
+            }
+        </div>
+    </div>
+}
+
+After adding, you will get compile time error
+
+Invalid src prop (https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png) on `next/image`, hostname "fakestoreapi.com" is not configured under images in your `next.config.js`
+See more info: https://nextjs.org/docs/messages/next-image-unconfigured-host
+
+src\app\products\page.js (17:21) @ <anonymous>
 
 
+  15 |                     <h2>{product.id}</h2>
+  16 |                     <h3>{product.title}</h3>
+> 17 |                     <Image src={product.image} height={200} alt={product.title} width={200} />
+     |                     ^
+  18 |                 </section>
+  19 |             })
+  20 |         }
 
+if you are accessing remote images, you must configure the location in next.config.mjs
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+    images: {
+        remotePatterns: [new URL('https://fakestoreapi.com/img/**')],
+    }
+};
+
+export default nextConfig;
+.......................................................................................................................................................................................................................................
+											 Image Gallery using img tag
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+Still you can use img tag, Image component has been optimized for server rendering, but some use cases you have to go with img tag
+
+import Image from "next/image"
+
+export default function ImageGallery() {
+    const images = [
+        'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',
+    ]
+
+    return (
+        <div className="max-w-6xl mx-auto px-4 py-8">
+            <h1 className="text-3xl font-semibold mb-6 text-center">Image Gallery</h1>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {images.map((src, idx) => (
+                    <div key={idx} className="overflow-hidden rounded-lg shadow-lg">
+                        <img
+                            src={src}
+                            alt={`Image ${idx + 1}`}
+                            className="w-full h-48 object-cover transform hover:scale-105 transition-transform duration-300 ease-in-out"
+                            loading="lazy"
+                        />
+                    </div>
+                ))}
+            </div>
+        </div>
+    )
+}
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+												Fonts
+...........................................................................................................................................................................................................................................
+
+By default Next js supports google fonts.
+
+import { Inter } from "next/font/google";
+import "./globals.css";
+
+//inter font configuration
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata = {
+  title: "Create Next App",
+  description: "Generated by create next app",
+};
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body className={inter.className}>{children}</body>
+    </html>
+  );
+}
+Task:
+ You have to build master details page
+
+ Master page must have card layout.
+
+ Detail page must have full information with layouts.
+
+Data Url:
+https://fakestoreapi.com/products
+
+1.Using css with proper layouts.
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 
 			
