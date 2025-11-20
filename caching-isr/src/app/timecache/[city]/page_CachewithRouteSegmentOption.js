@@ -1,0 +1,24 @@
+
+//route segment option for enabling caching
+
+//To enable cache
+// export const fetchCache = 'force-cache'
+
+//To disable cache
+export const fetchCache = 'force-no-store'
+
+
+export async function getTime() {
+    const url = 'https://www.timeapi.io/api/Time/current/zone?timeZone=Asia/Kolkata'
+    const response = await fetch(url)
+    const data = await response.json()
+    return data
+
+}
+
+export default async function TimeCachePage() {
+    const data = await getTime()
+    return <div className="font-bold">
+        <h1>Time Now : {new Date(data.dateTime).toLocaleTimeString()}</h1>
+    </div>
+}
